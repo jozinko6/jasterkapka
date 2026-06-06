@@ -17,7 +17,7 @@ const assets = [
   "./manifest.webmanifest",
   "./partner-courier.webmanifest",
   "./assets/icon.svg",
-  "./assets/hero-pizza.png"
+  "./assets/hero-pizza.svg"
 ];
 
 self.addEventListener("install", (event) => {
