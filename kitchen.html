@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="sk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pizza Jasterka Kuchyňa</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="staff.css" />
+  </head>
+  <body class="staff-page">
+    <header class="staff-header">
+      <div>
+        <small>Pizza Jasterka</small>
+        <h1>Kuchynský systém</h1>
+      </div>
+      <nav class="staff-nav">
+        <a href="courier.html">Kuriér</a>
+        <a href="admin.html">Admin</a>
+      </nav>
+    </header>
+
+    <main class="staff-layout kitchen-layout">
+      <section class="staff-panel">
+        <h2>Prístup</h2>
+        <label>
+          Staff PIN
+          <input id="staffPin" type="password" placeholder="PIN z Vercel env STAFF_PIN" />
+        </label>
+        <button class="primary-action" id="loadOrders" type="button">Načítať objednávky</button>
+        <p class="delivery-rule">Nová objednávka prehrá zvuk. Stav sa po zmene uloží do histórie objednávky.</p>
+      </section>
+
+      <section class="staff-panel wide">
+        <div class="panel-title">
+          <h2>Aktívne objednávky</h2>
+          <button class="secondary-action compact" id="refreshOrders" type="button">Obnoviť</button>
+        </div>
+        <div class="kanban" id="ordersBoard"></div>
+      </section>
+    </main>
+
+    <script src="kitchen.js" type="module"></script>
+  </body>
+</html>

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="sk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#101713" />
+    <title>Jašterka Partner Courier</title>
+    <link rel="manifest" href="partner-courier.webmanifest" />
+    <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="partner-courier.css" />
+  </head>
+  <body>
+    <div class="partner-app">
+      <header class="partner-top">
+        <div>
+          <small>Pizza Jašterka</small>
+          <h1>Partner Courier</h1>
+        </div>
+        <button id="onlineToggle" type="button" disabled>Offline</button>
+      </header>
+
+      <main>
+        <section class="login-view" id="loginView">
+          <div class="login-hero">
+            <span class="courier-mark">J</span>
+            <h2>Prihlásenie kuriéra</h2>
+            <p>Zadaj telefónne číslo schválené kuchyňou. Po osobnom potvrdení bude účet aktívny.</p>
+          </div>
+          <form class="auth-card" id="phoneForm">
+            <label>
+              Telefón
+              <input id="phoneInput" type="tel" inputmode="tel" placeholder="+421..." autocomplete="tel" required />
+            </label>
+            <button type="submit">Prihlásiť sa</button>
+          </form>
+          <p class="system-note" id="authMessage"></p>
+        </section>
+
+        <section class="work-view" id="workView" hidden>
+          <div class="courier-summary">
+            <div>
+              <span>Dnes</span>
+              <strong id="todayCount">0 rozvozov</strong>
+            </div>
+            <div>
+              <span>Zárobok</span>
+              <strong id="todayEarnings">0,00 €</strong>
+            </div>
+            <div>
+              <span>Týždeň</span>
+              <strong id="weekEarnings">0,00 €</strong>
+            </div>
+          </div>
+          <p class="system-note courier-state" id="courierState">Online</p>
+
+          <nav class="partner-tabs">
+            <button class="active" type="button" data-tab="offers">Ponuky</button>
+            <button type="button" data-tab="mine">Moje rozvozy</button>
+            <button type="button" data-tab="history">História</button>
+          </nav>
+
+          <section class="task-list" id="offersPanel"></section>
+          <section class="task-list" id="minePanel" hidden></section>
+          <section class="task-list" id="historyPanel" hidden></section>
+        </section>
+      </main>
+
+      <button class="refresh-pill" id="refreshTasks" type="button" hidden>Obnoviť rozvozy</button>
+    </div>
+
+    <script src="partner-courier.js" type="module"></script>
+  </body>
+</html>

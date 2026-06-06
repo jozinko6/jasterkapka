@@ -1,0 +1,17 @@
+{
+  "name": "pizza-jasterka-pwa",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "check": "node --check app.js && node --check admin.js && node --check kitchen.js && node --check courier.js && node --check partner-courier.js && node --check api/menu.mjs && node --check api/orders.mjs && node --check api/admin/products.mjs && node --check api/kitchen/orders.mjs && node --check api/courier/tasks.mjs && node --check api/courier/couriers.mjs && node --check api/courier/earnings.mjs && node --check api/partner/auth/start.mjs && node --check api/partner/me.mjs && node --check api/partner/tasks.mjs && node --check api/partner/earnings.mjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.8",
+    "web-push": "^3.6.7"
+  },
+  "devDependencies": {
+    "vercel": "^41.7.0"
+  }
+}

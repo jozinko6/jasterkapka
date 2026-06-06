@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="sk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#34d186" />
+    <meta name="description" content="PWA objednavkova aplikacia pre Pizza Jasterka Hlohovec." />
+    <title>Pizza Jasterka Hlohovec</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="assets/icon.svg" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <button class="icon-button" id="backButton" aria-label="Spat">
+          <span aria-hidden="true">‹</span>
+        </button>
+        <div class="delivery-chip">
+          <span class="pin" aria-hidden="true"></span>
+          <button id="addressButton" type="button">
+            <small>Dorucenie</small>
+            <strong>Hlohovec, centrum</strong>
+          </button>
+        </div>
+        <button class="icon-button" id="searchButton" aria-label="Hladat">
+          <span aria-hidden="true">⌕</span>
+        </button>
+      </header>
+
+      <main>
+        <section class="hero">
+          <img src="assets/hero-pizza.png" alt="Cerstva pizza v krabici" />
+          <div class="hero-overlay">
+            <div class="store-badge">Otvorene dnes</div>
+            <h1>Pizza Jasterka</h1>
+            <p>Rodinna pizzeria v Hlohovci s pizzou, pizza stanglami a focacciom pripravenym cerstvo po objednani.</p>
+          </div>
+        </section>
+
+        <section class="store-summary" aria-label="Informacie o prevadzke">
+          <div>
+            <strong>4.7</strong>
+            <span>hodnotenie</span>
+          </div>
+          <div>
+            <strong>25-40 min</strong>
+            <span>dorucenie</span>
+          </div>
+          <div>
+            <strong>podľa obce</strong>
+            <span>doprava</span>
+          </div>
+        </section>
+
+        <section class="notice">
+          <strong>Vyber si svoju pizzu presne podla chuti.</strong>
+          <span>Rajcinovy alebo smotanovy zaklad, doplnky navyse a rozvoz mimo Hlohovca od objednavky 20 €.</span>
+        </section>
+
+        <div class="search-panel" id="searchPanel" hidden>
+          <label for="searchInput">Hladat v ponuke</label>
+          <input id="searchInput" type="search" placeholder="Pizza, stangle, dresing..." autocomplete="off" />
+        </div>
+
+        <nav class="category-tabs" id="categoryTabs" aria-label="Kategorie"></nav>
+
+        <section class="menu-list" id="menuList" aria-live="polite"></section>
+      </main>
+
+      <button class="cart-bar" id="cartBar" type="button" hidden>
+        <span id="cartCount">0</span>
+        <strong>Zobrazit kosik</strong>
+        <b id="cartTotal">0,00 €</b>
+      </button>
+    </div>
+
+    <dialog class="sheet" id="productSheet">
+      <form method="dialog" class="sheet-card">
+        <button class="sheet-close" value="cancel" aria-label="Zavriet">×</button>
+        <div class="sheet-image" id="sheetImage"></div>
+        <div class="sheet-body">
+          <h2 id="sheetTitle"></h2>
+          <p id="sheetDescription"></p>
+          <div class="option-group" id="variantGroup"></div>
+          <div class="option-group" id="extrasGroup"></div>
+          <div class="quantity-row">
+            <button type="button" id="decreaseQty" aria-label="Menej">−</button>
+            <strong id="sheetQty">1</strong>
+            <button type="button" id="increaseQty" aria-label="Viac">+</button>
+          </div>
+          <button class="primary-action" id="addToCartButton" type="button">Pridat</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="sheet" id="cartSheet">
+      <form method="dialog" class="sheet-card cart-card">
+        <button class="sheet-close" value="cancel" aria-label="Zavriet">×</button>
+        <div class="sheet-body">
+          <h2>Kosik</h2>
+          <div id="cartItems" class="cart-items"></div>
+          <div class="checkout-panel">
+            <label>
+              Obec dorucenia
+              <select id="deliveryVillage" required></select>
+            </label>
+            <label>
+              Ulica a cislo domu
+              <input id="deliveryStreet" placeholder="Napr. M. R. Stefanika 12" required minlength="5" autocomplete="street-address" />
+            </label>
+            <p class="delivery-rule" id="deliveryRule"></p>
+            <label>
+              Poznamka
+              <textarea id="orderNote" rows="2" placeholder="Napr. bez cibule, volat pri prichode"></textarea>
+            </label>
+            <div class="pay-methods">
+              <button type="button" class="pay-method active" data-pay="card">Karta</button>
+              <button type="button" class="pay-method" data-pay="cash">Hotovost</button>
+            </div>
+          </div>
+          <div class="totals">
+            <span>Medzisucet</span><strong id="subtotalText">0,00 €</strong>
+            <span>Doprava</span><strong id="deliveryText">0,00 €</strong>
+            <span>Spolu</span><strong id="grandTotalText">0,00 €</strong>
+          </div>
+          <button class="primary-action" id="checkoutButton" type="button">Objednat</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="confirm-modal" id="confirmDialog">
+      <div class="confirm-card">
+        <div class="success-mark">✓</div>
+        <h2>Objednavka pripravena</h2>
+        <p id="confirmText"></p>
+        <div class="order-progress" id="orderProgress" hidden>
+          <span id="orderStatusLabel">Prijata</span>
+          <div class="progress-track"><span id="orderProgressBar"></span></div>
+          <small id="orderStatusMessage">Stav objednavky sa bude aktualizovat automaticky.</small>
+        </div>
+        <button class="secondary-action" id="enableNotifications" type="button">Zapnut notifikacie</button>
+        <button class="primary-action" id="closeConfirm" type="button">Hotovo</button>
+      </div>
+    </dialog>
+
+    <script src="app.js" type="module"></script>
+  </body>
+</html>

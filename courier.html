@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="sk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pizza Jasterka Kuriér</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="staff.css" />
+  </head>
+  <body class="staff-page courier-page">
+    <header class="staff-header">
+      <div>
+        <small>Pizza Jasterka</small>
+        <h1>Kuriérsky systém</h1>
+      </div>
+      <nav class="staff-nav">
+        <a href="partner-courier.html">Partner PWA</a>
+        <a href="kitchen.html">Kuchyňa</a>
+        <a href="admin.html">Admin</a>
+      </nav>
+    </header>
+
+    <main class="staff-layout courier-layout">
+      <section class="staff-panel">
+        <h2>Prístup kuriéra</h2>
+        <label>
+          Staff PIN
+          <input id="staffPin" type="password" placeholder="PIN z Vercel env STAFF_PIN" />
+        </label>
+        <label>
+          Kuriér
+          <select id="courierSelect"></select>
+        </label>
+        <button class="primary-action" id="loadCourier" type="button">Spustiť smenu</button>
+        <p class="delivery-rule">Rozvoz sa dá prijať, označiť vyzdvihnutie, blízkosť zákazníka a doručenie.</p>
+      </section>
+
+      <section class="staff-panel">
+        <div class="panel-title">
+          <h2>Dispatch</h2>
+          <button class="secondary-action compact" id="refreshCourier" type="button">Obnoviť</button>
+        </div>
+        <form id="courierForm" class="staff-form inline courier-form">
+          <input name="display_name" placeholder="Meno kuriéra" required />
+          <input name="phone" placeholder="Telefón" />
+          <select name="vehicle_type">
+            <option value="car">Auto</option>
+            <option value="bike">Bicykel</option>
+            <option value="scooter">Skúter</option>
+          </select>
+          <button class="primary-action" type="submit">Pridať kuriéra</button>
+        </form>
+        <div class="table-list" id="courierList"></div>
+      </section>
+
+      <section class="staff-panel wide">
+        <div class="panel-title">
+          <h2>Zárobky a doručenia</h2>
+          <button class="secondary-action compact" id="refreshEarnings" type="button">Obnoviť</button>
+        </div>
+        <div class="table-list" id="earningsList"></div>
+      </section>
+
+      <section class="staff-panel wide">
+        <h2>Dostupné rozvozy</h2>
+        <div class="delivery-board" id="availableTasks"></div>
+      </section>
+
+      <section class="staff-panel wide">
+        <h2>Moje rozvozy</h2>
+        <div class="delivery-board" id="myTasks"></div>
+      </section>
+    </main>
+
+    <script src="courier.js" type="module"></script>
+  </body>
+</html>

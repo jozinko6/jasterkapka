@@ -1,0 +1,18 @@
+{
+  "name": "Pizza Jasterka Partner Courier",
+  "short_name": "Jasterka Courier",
+  "description": "Partnerska kurierska PWA pre rozvoz Pizza Jasterka.",
+  "start_url": "./partner-courier.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#101713",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

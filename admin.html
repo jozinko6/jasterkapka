@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="sk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pizza Jasterka Admin</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="staff.css" />
+  </head>
+  <body class="staff-page">
+    <header class="staff-header">
+      <div>
+        <small>Pizza Jasterka</small>
+        <h1>Admin</h1>
+      </div>
+      <nav class="staff-nav">
+        <a href="kitchen.html">Kuchyňa</a>
+        <a href="courier.html">Kuriér</a>
+      </nav>
+    </header>
+
+    <main class="staff-layout">
+      <section class="staff-panel">
+        <h2>Prístup</h2>
+        <label>
+          Staff PIN
+          <input id="staffPin" type="password" placeholder="PIN z Vercel env STAFF_PIN" />
+        </label>
+        <button class="primary-action" id="loadAdmin" type="button">Načítať dáta</button>
+      </section>
+
+      <section class="staff-panel wide">
+        <div class="panel-title">
+          <h2>Produkty na hlavnej stránke</h2>
+          <button class="secondary-action compact" id="refreshProducts" type="button">Obnoviť</button>
+        </div>
+        <div class="table-list" id="productList"></div>
+      </section>
+
+      <section class="staff-panel">
+        <h2>Rýchla úprava produktu</h2>
+        <form id="productForm" class="staff-form">
+          <input name="id" type="hidden" />
+          <label>Názov <input name="name" required /></label>
+          <label>Popis <textarea name="description" rows="3"></textarea></label>
+          <label>Cena <input name="price" type="number" min="0" step="0.01" required /></label>
+          <label>Ikona <input name="icon" maxlength="4" /></label>
+          <label class="checkbox-line"><input name="is_active" type="checkbox" checked /> Aktívny</label>
+          <label class="checkbox-line"><input name="is_popular" type="checkbox" /> Obľúbené</label>
+          <button class="primary-action" type="submit">Uložiť produkt</button>
+        </form>
+      </section>
+
+      <section class="staff-panel">
+        <div class="panel-title">
+          <h2>Suroviny</h2>
+          <button class="secondary-action compact" id="refreshInventory" type="button">Obnoviť</button>
+        </div>
+        <form id="ingredientForm" class="staff-form inline">
+          <input name="name" placeholder="Surovina" required />
+          <input name="unit" placeholder="Jednotka" value="g" />
+          <input name="stock_qty" type="number" step="0.001" placeholder="Sklad" />
+          <input name="low_stock_qty" type="number" step="0.001" placeholder="Minimum" />
+          <button class="primary-action" type="submit">Pridať</button>
+        </form>
+        <div class="table-list" id="inventoryList"></div>
+      </section>
+    </main>
+
+    <script src="admin.js" type="module"></script>
+  </body>
+</html>
