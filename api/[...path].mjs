@@ -1,5 +1,8 @@
 import { methodNotAllowed } from "../server/_lib/http.mjs";
 import * as adminInventory from "../server/admin/inventory.mjs";
+import * as adminOverview from "../server/admin/overview.mjs";
+import * as adminRewards from "../server/admin/rewards.mjs";
+import * as adminZones from "../server/admin/zones.mjs";
 import * as adminProducts from "../server/admin/products.mjs";
 import * as courierCouriers from "../server/courier/couriers.mjs";
 import * as courierEarnings from "../server/courier/earnings.mjs";
@@ -22,6 +25,9 @@ const routes = [
   { pattern: /^kitchen\/orders$/, methods: { GET: kitchenOrders.GET, PATCH: kitchenOrders.PATCH } },
   { pattern: /^admin\/products$/, methods: { GET: adminProducts.GET, POST: adminProducts.POST, PATCH: adminProducts.PATCH } },
   { pattern: /^admin\/inventory$/, methods: { GET: adminInventory.GET, POST: adminInventory.POST } },
+  { pattern: /^admin\/overview$/, methods: { GET: adminOverview.GET } },
+  { pattern: /^admin\/zones$/, methods: { GET: adminZones.GET, POST: adminZones.POST, PATCH: adminZones.PATCH } },
+  { pattern: /^admin\/rewards$/, methods: { GET: adminRewards.GET, POST: adminRewards.POST } },
   { pattern: /^courier\/couriers$/, methods: { GET: courierCouriers.GET, POST: courierCouriers.POST, PATCH: courierCouriers.PATCH } },
   { pattern: /^courier\/tasks$/, methods: { GET: courierTasks.GET, PATCH: courierTasks.PATCH } },
   { pattern: /^courier\/earnings$/, methods: { GET: courierEarnings.GET } },
