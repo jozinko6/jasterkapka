@@ -24,9 +24,10 @@ npm run dev
 Projekt je pripraveny pre Vercel Functions a Supabase, bez deployu.
 
 - `supabase/schema.sql` obsahuje tabulky pre produkty, varianty, doplnky, rozvozove zony, objednavky, historiu stavov, staff role, suroviny a push subscription.
-- `api/orders.mjs` vytvara objednavku a serverovo prepocitava obec, minimum, dopravu a ceny.
-- `api/kitchen/orders.mjs` obsluhuje kuchynsky proces prijatia a zmeny stavov objednavky.
-- `api/admin/products.mjs` a `api/admin/inventory.mjs` su priprava pre spravu produktov a surovin.
+- `api/[...path].mjs` je jedina Vercel Serverless Function a routuje vsetky API endpointy do handlerov v `server/`.
+- `server/orders.mjs` vytvara objednavku a serverovo prepocitava obec, minimum, dopravu a ceny.
+- `server/kitchen/orders.mjs` obsluhuje kuchynsky proces prijatia a zmeny stavov objednavky.
+- `server/admin/products.mjs` a `server/admin/inventory.mjs` su priprava pre spravu produktov a surovin.
 - `admin.html` je samostatny admin.
 - `kitchen.html` je samostatny kuchynsky system.
 - `courier.html` je samostatny kuriersky system pre dispatch, prijatie rozvozu, vyzdvihnutie, priebezne stavy a dorucenie.

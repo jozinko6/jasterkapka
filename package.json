@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vercel dev",
-    "check": "node --check app.js && node --check admin.js && node --check kitchen.js && node --check courier.js && node --check partner-courier.js && node --check api/menu.mjs && node --check api/orders.mjs && node --check api/admin/products.mjs && node --check api/kitchen/orders.mjs && node --check api/courier/tasks.mjs && node --check api/courier/couriers.mjs && node --check api/courier/earnings.mjs && node --check api/partner/auth/start.mjs && node --check api/partner/me.mjs && node --check api/partner/tasks.mjs && node --check api/partner/earnings.mjs"
+    "check": "node --check app.js && node --check admin.js && node --check kitchen.js && node --check courier.js && node --check partner-courier.js && node --check api/[...path].mjs && node --check server/menu.mjs && node --check server/orders.mjs && node --check server/admin/products.mjs && node --check server/kitchen/orders.mjs && node --check server/courier/tasks.mjs && node --check server/courier/couriers.mjs && node --check server/courier/earnings.mjs && node --check server/partner/auth/start.mjs && node --check server/partner/me.mjs && node --check server/partner/tasks.mjs && node --check server/partner/earnings.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.8",
