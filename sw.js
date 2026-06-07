@@ -1,4 +1,4 @@
-const cacheName = "pizza-jasterka-pwa-v10";
+const cacheName = "pizza-jasterka-pwa-v11";
 const assets = [
   "./",
   "./index.html",
@@ -10,6 +10,7 @@ const assets = [
   "./staff.css",
   "./partner-courier.css",
   "./app.js",
+  "./customer.js",
   "./admin.js",
   "./kitchen.js",
   "./courier.js",
