@@ -61,8 +61,13 @@ create table public.delivery_zones (
 
 create table public.customers (
   id uuid primary key default gen_random_uuid(),
-  phone text,
-  name text,
+  phone text not null,
+  name text not null,
+  email text,
+  newsletter_opt_in boolean not null default false,
+  loyalty_points integer not null default 0,
+  registered_at timestamptz,
+  last_order_at timestamptz,
   created_at timestamptz not null default now()
 );
 
@@ -81,6 +86,7 @@ create table public.orders (
   accepted_at timestamptz,
   promised_at timestamptz,
   completed_at timestamptz,
+  loyalty_awarded_at timestamptz,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
