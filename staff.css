@@ -225,6 +225,22 @@
   font-weight: 900;
 }
 
+.assign-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: end;
+  padding-top: 6px;
+}
+
+.assign-row label {
+  gap: 4px;
+}
+
+.assign-row select {
+  width: 100%;
+}
+
 .order-actions {
   display: flex;
   flex-wrap: wrap;
@@ -232,7 +248,8 @@
 }
 
 .order-actions button,
-.table-row button {
+.table-row button,
+.assign-row button {
   border: 0;
   border-radius: 8px;
   padding: 9px 10px;
@@ -247,7 +264,8 @@
   .courier-layout,
   .staff-form.inline,
   .kanban,
-  .stats-grid {
+  .stats-grid,
+  .assign-row {
     grid-template-columns: 1fr;
   }
 }
