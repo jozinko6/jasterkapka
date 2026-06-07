@@ -1,14 +1,14 @@
 import { json, methodNotAllowed, readJson, requireStaff } from "../_lib/http.mjs";
 import { adminClient } from "../_lib/supabase.mjs";
+import { listCourierChoices } from "../_lib/courier-routing.mjs";
 
 export async function GET(request) {
   const auth = requireStaff(request);
   if (!auth.ok) return auth.response;
   const supabase = adminClient();
   if (!supabase) return json({ error: "Supabase is not configured" }, { status: 503 });
-  const { data, error } = await supabase.from("couriers").select("*").eq("is_active", true).order("display_name");
-  if (error) return json({ error: error.message }, { status: 500 });
-  return json({ couriers: data });
+  const couriers = await listCourierChoices(supabase);
+  return json({ couriers });
 }
 
 export async function POST(request) {
