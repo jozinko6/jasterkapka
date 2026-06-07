@@ -26,9 +26,9 @@ export function methodNotAllowed() {
 }
 
 export function requireStaff(request) {
-  const configuredPin = process.env.STAFF_PIN;
+  const configuredPin = process.env.STAFF_PIN?.trim();
   if (!configuredPin) return { ok: false, response: json({ error: "STAFF_PIN is not configured" }, { status: 500 }) };
-  const pin = request.headers.get("x-staff-pin");
+  const pin = request.headers.get("x-staff-pin")?.trim();
   if (pin !== configuredPin) return { ok: false, response: json({ error: "Unauthorized" }, { status: 401 }) };
   return { ok: true };
 }
