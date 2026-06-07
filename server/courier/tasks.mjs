@@ -1,5 +1,7 @@
 import { json, methodNotAllowed, readJson, requireStaff } from "../_lib/http.mjs";
 import { adminClient } from "../_lib/supabase.mjs";
+import { awardLoyaltyPoints } from "../_lib/customer-profile.mjs";
+import { validateCourierAssignment } from "../_lib/courier-routing.mjs";
 
 const statusMessages = {
   assigned: "Kuriér bol priradený k objednávke.",
@@ -58,6 +60,14 @@ export async function PATCH(request) {
   const supabase = adminClient();
   if (!supabase) return json({ error: "Supabase is not configured" }, { status: 503 });
 
+  const { data: currentTask, error: currentTaskError } = await supabase.from("delivery_tasks").select("id, order_id, courier_id, status").eq("id", payload.id).single();
+  if (currentTaskError) return json({ error: currentTaskError.message }, { status: 500 });
+
+  if (payload.courier_id) {
+    const validation = await validateCourierAssignment(supabase, { courierId: payload.courier_id, orderId: currentTask.order_id });
+    if (!validation.ok) return json({ error: validation.error }, { status: validation.status || 409 });
+  }
+
   const patch = { status: payload.status, updated_at: new Date().toISOString() };
   if (payload.courier_id) patch.courier_id = payload.courier_id;
   if (payload.status === "assigned") patch.assigned_at = new Date().toISOString();
@@ -90,6 +100,10 @@ export async function PATCH(request) {
     lat: payload.lat || null,
     lng: payload.lng || null
   });
+
+  if (payload.status === "delivered") {
+    await awardLoyaltyPoints(supabase, task.order_id);
+  }
 
   return json({ task });
 }
