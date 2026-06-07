@@ -186,6 +186,19 @@
   font-size: 13px;
 }
 
+#courierStatus {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+}
+
+#courierStatus[data-kind="success"] {
+  color: #0f8b5f;
+}
+
+#courierStatus[data-kind="error"] {
+  color: #c0392b;
+}
+
 .kanban {
   display: grid;
   grid-template-columns: repeat(4, minmax(230px, 1fr));
