@@ -1,4 +1,4 @@
-const cacheName = "pizza-jasterka-pwa-v9";
+const cacheName = "pizza-jasterka-pwa-v10";
 const assets = [
   "./",
   "./index.html",
