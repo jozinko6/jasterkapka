@@ -7,6 +7,7 @@ import * as adminProducts from "../server/admin/products.mjs";
 import * as courierCouriers from "../server/courier/couriers.mjs";
 import * as courierEarnings from "../server/courier/earnings.mjs";
 import * as courierTasks from "../server/courier/tasks.mjs";
+import * as customers from "../server/customers.mjs";
 import * as kitchenOrders from "../server/kitchen/orders.mjs";
 import * as menu from "../server/menu.mjs";
 import * as notificationsSubscribe from "../server/notifications/subscribe.mjs";
@@ -22,6 +23,7 @@ const routes = [
   { pattern: /^menu$/, methods: { GET: menu.GET } },
   { pattern: /^orders$/, methods: { POST: orders.POST } },
   { pattern: /^orders\/[^/]+$/, methods: { GET: orderDetail.GET } },
+  { pattern: /^customers$/, methods: { GET: customers.GET, POST: customers.POST } },
   { pattern: /^kitchen\/orders$/, methods: { GET: kitchenOrders.GET, PATCH: kitchenOrders.PATCH } },
   { pattern: /^admin\/products$/, methods: { GET: adminProducts.GET, POST: adminProducts.POST, PATCH: adminProducts.PATCH } },
   { pattern: /^admin\/inventory$/, methods: { GET: adminInventory.GET, POST: adminInventory.POST } },
