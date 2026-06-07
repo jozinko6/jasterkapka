@@ -1,6 +1,7 @@
 import { deliveryForVillage, money, validateStreet } from "./_lib/catalog.mjs";
 import { badRequest, json, methodNotAllowed, readJson } from "./_lib/http.mjs";
 import { adminClient } from "./_lib/supabase.mjs";
+import { upsertCustomerProfile } from "./_lib/customer-profile.mjs";
 
 async function loadProducts(supabase, items) {
   const slugs = [...new Set(items.map((item) => item.productId).filter(Boolean))];
@@ -32,6 +33,11 @@ export async function POST(request) {
 
   const street = validateStreet(payload.delivery?.street);
   if (!street) return badRequest("Street must include street name and house number");
+
+  const customerPayload = payload.customer || {};
+  const customer = await upsertCustomerProfile(supabase, customerPayload).catch((error) => {
+    throw new Error(error.message);
+  });
 
   const catalog = await loadProducts(supabase, payload.items);
   const orderItems = [];
@@ -68,13 +74,6 @@ export async function POST(request) {
     });
   }
 
-  const { data: customer, error: customerError } = await supabase
-    .from("customers")
-    .insert({ phone: payload.customer?.phone || null, name: payload.customer?.name || null })
-    .select("id")
-    .single();
-  if (customerError) return json({ error: customerError.message }, { status: 500 });
-
   const orderRecord = {
     customer_id: customer.id,
     village: location.village,
@@ -89,6 +88,8 @@ export async function POST(request) {
   const { data: order, error: orderError } = await supabase.from("orders").insert(orderRecord).select("*").single();
   if (orderError) return json({ error: orderError.message }, { status: 500 });
 
+  await supabase.from("customers").update({ last_order_at: new Date().toISOString() }).eq("id", customer.id);
+
   const { error: itemsError } = await supabase.from("order_items").insert(orderItems.map((item) => ({ ...item, order_id: order.id })));
   if (itemsError) return json({ error: itemsError.message }, { status: 500 });
 
@@ -98,15 +99,26 @@ export async function POST(request) {
     message: "Objednávka bola prijatá do systému."
   });
 
-  return json({
-    order: {
-      id: order.id,
-      token: order.public_token,
-      status: order.status,
-      total: Number(order.total),
-      deliveryFee: Number(order.delivery_fee)
-    }
-  }, { status: 201 });
+  return json(
+    {
+      order: {
+        id: order.id,
+        token: order.public_token,
+        status: order.status,
+        total: Number(order.total),
+        deliveryFee: Number(order.delivery_fee)
+      },
+      customer: {
+        id: customer.id,
+        name: customer.name,
+        phone: customer.phone,
+        loyaltyPoints: Number(customer.loyalty_points || 0),
+        registered: Boolean(customer.registered_at),
+        newsletterOptIn: Boolean(customer.newsletter_opt_in)
+      }
+    },
+    { status: 201 }
+  );
 }
 
 export default { fetch: (request) => (request.method === "POST" ? POST(request) : methodNotAllowed()) };
