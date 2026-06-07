@@ -33,7 +33,7 @@ function escapeHtml(value) {
 function staffHeaders() {
   return {
     "content-type": "application/json",
-    "x-staff-pin": pinInput.value
+    "x-staff-pin": pinInput.value.trim()
   };
 }
 
