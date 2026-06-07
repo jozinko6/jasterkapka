@@ -20,13 +20,13 @@ export async function POST(request) {
   if (!supabase) return json({ error: "Supabase is not configured" }, { status: 503 });
   const { data, error } = await supabase
     .from("couriers")
-    .upsert({
+    .insert({
       display_name: payload.display_name,
       phone: payload.phone || null,
       vehicle_type: payload.vehicle_type || "car",
       is_active: payload.is_active !== false,
       is_online: Boolean(payload.is_online)
-    }, { onConflict: "display_name" })
+    })
     .select("*")
     .single();
   if (error) return json({ error: error.message }, { status: 500 });
