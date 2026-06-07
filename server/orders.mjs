@@ -34,10 +34,12 @@ export async function POST(request) {
   const street = validateStreet(payload.delivery?.street);
   if (!street) return badRequest("Street must include street name and house number");
 
-  const customerPayload = payload.customer || {};
-  const customer = await upsertCustomerProfile(supabase, customerPayload).catch((error) => {
-    throw new Error(error.message);
-  });
+  let customer;
+  try {
+    customer = await upsertCustomerProfile(supabase, payload.customer || {});
+  } catch (error) {
+    return badRequest(error.message);
+  }
 
   const catalog = await loadProducts(supabase, payload.items);
   const orderItems = [];
