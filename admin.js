@@ -435,5 +435,11 @@ for (const button of document.querySelectorAll("[data-section-link]")) {
   button.addEventListener("click", () => scrollToSection(button.dataset.sectionLink));
 }
 
+pinInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    loadOverview();
+  }
+});
+
 fillProductForm();
 setStatus("Zadaj PIN a načítaj dáta.", "neutral");
