@@ -5,6 +5,7 @@ const earningsList = document.querySelector("#earningsList");
 const availableTasks = document.querySelector("#availableTasks");
 const myTasks = document.querySelector("#myTasks");
 const courierForm = document.querySelector("#courierForm");
+const courierStatus = document.querySelector("#courierStatus");
 let couriers = [];
 let tasks = [];
 let earnings = [];
@@ -23,6 +24,12 @@ function staffHeaders() {
     "content-type": "application/json",
     "x-staff-pin": pinInput.value
   };
+}
+
+function setStatus(message, kind = "muted") {
+  if (!courierStatus) return;
+  courierStatus.textContent = message;
+  courierStatus.dataset.kind = kind;
 }
 
 function beep() {
@@ -102,6 +109,7 @@ function renderTasks() {
 
 async function loadCourierSystem() {
   try {
+    setStatus("Načítavam kuriérsky systém...", "muted");
     const [courierData, taskData, earningsData] = await Promise.all([api("/api/courier/couriers"), api("/api/courier/tasks"), api("/api/courier/earnings")]);
     const previousTaskCount = tasks.length;
     couriers = courierData.couriers;
@@ -110,9 +118,13 @@ async function loadCourierSystem() {
     renderCouriers();
     renderTasks();
     renderEarnings();
+    setStatus(`Prihlásené: ${couriers.length} kuriérov, ${tasks.length} rozvozov.`, "success");
     if (previousTaskCount && tasks.length > previousTaskCount) beep();
   } catch (error) {
     availableTasks.innerHTML = `<p>${error.message}</p>`;
+    myTasks.innerHTML = "";
+    earningsList.innerHTML = "";
+    setStatus(error.message, "error");
   }
 }
 
@@ -172,28 +184,42 @@ document.querySelector("#loadCourier").addEventListener("click", () => {
 document.querySelector("#refreshCourier").addEventListener("click", loadCourierSystem);
 document.querySelector("#refreshEarnings").addEventListener("click", loadCourierSystem);
 courierSelect.addEventListener("change", renderTasks);
+pinInput.value = localStorage.getItem("jasterka_staff_pin") || "";
+pinInput.addEventListener("input", () => {
+  localStorage.setItem("jasterka_staff_pin", pinInput.value);
+  setStatus(pinInput.value ? "PIN pripravený." : "Zadaj PIN a spusti smenu.");
+});
 
 document.body.addEventListener("click", async (event) => {
   const taskButton = event.target.closest("button[data-task]");
   const onlineButton = event.target.closest("button[data-online]");
   if (taskButton) await updateTask(taskButton.dataset.task, taskButton.dataset.status);
   if (onlineButton) {
-    await api("/api/courier/couriers", {
-      method: "PATCH",
-      body: JSON.stringify({ id: onlineButton.dataset.online, is_online: onlineButton.dataset.value === "true" })
-    });
-    loadCourierSystem();
+    try {
+      await api("/api/courier/couriers", {
+        method: "PATCH",
+        body: JSON.stringify({ id: onlineButton.dataset.online, is_online: onlineButton.dataset.value === "true" })
+      });
+      loadCourierSystem();
+    } catch (error) {
+      setStatus(error.message, "error");
+    }
   }
 });
 
 courierForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  await api("/api/courier/couriers", {
-    method: "POST",
-    body: JSON.stringify(Object.fromEntries(new FormData(courierForm).entries()))
-  });
-  courierForm.reset();
-  loadCourierSystem();
+  try {
+    await api("/api/courier/couriers", {
+      method: "POST",
+      body: JSON.stringify(Object.fromEntries(new FormData(courierForm).entries()))
+    });
+    courierForm.reset();
+    setStatus("Kuriér pridaný.", "success");
+    loadCourierSystem();
+  } catch (error) {
+    setStatus(error.message, "error");
+  }
 });
 
 setInterval(() => {
